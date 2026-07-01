@@ -1,65 +1,215 @@
-# medxai 🚀
+# 🩺 MedXAI
 
-[![PyPI version](https://img.shields.io/pypi/v/medxai.svg)](https://pypi.org/project/medxai/)
+[![PyPI Version](https://img.shields.io/pypi/v/medxai.svg)](https://pypi.org/project/medxai/)
+[![Python](https://img.shields.io/pypi/pyversions/medxai.svg)](https://pypi.org/project/medxai/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**medxai** is a production-grade, lightweight, and highly optimized Python toolkit tailored for Medical Imaging AI research. It bridges the gap between raw medical scans, deep learning models, radiomics extraction, and explainable AI (XAI).
+**MedXAI** is a lightweight, production-ready Python toolkit for Medical Imaging AI research. It provides efficient implementations of segmentation metrics, loss functions, preprocessing utilities, radiomics feature extraction, and Explainable AI (XAI), enabling researchers to build reliable and reproducible deep learning pipelines.
 
-## ✨ Key Features
+Designed with simplicity, efficiency, and extensibility in mind, MedXAI seamlessly integrates with **PyTorch**, **NumPy**, and **OpenCV**, making it suitable for both academic research and real-world medical imaging applications.
 
-- **Device-Agnostic Metrics**: Robust implementation of Dice, IoU, Precision, and Recall supporting both CPU and GPU tensors with built-in shape validation.
-- **Advanced Segmentation Losses**: Memory-optimized loss functions including Focal Tversky Loss and Hybrid BCE-Dice Loss.
-- **Medical Preprocessing**: Safe implementations of CLAHE (multi-channel adaptive equalization), ROI cropping, and min-max normalization.
-- **Radiomics Extraction**: High-fidelity GLCM texture feature analysis and uniform LBP pattern extractions.
-- **Explainable AI (XAI)**: Memory-safe GradCAM implementation featuring automated hook cleanups to avoid CUDA memory leaks.
+---
 
-## 📦 Installation
+# ✨ Features
 
-Install `medxai` via PyPI:
+### 📊 Segmentation Metrics
+- Dice Coefficient
+- Intersection over Union (IoU)
+- Precision
+- Recall
+- GPU & CPU compatible
+- Automatic tensor shape validation
+
+---
+
+### 🎯 Advanced Loss Functions
+- Dice Loss
+- BCE + Dice Hybrid Loss
+- Focal Tversky Loss
+- Memory-efficient implementations
+
+---
+
+### 🖼 Medical Image Preprocessing
+- CLAHE (Contrast Limited Adaptive Histogram Equalization)
+- ROI Cropping
+- Min-Max Normalization
+- Multi-channel image support
+
+---
+
+### 🔬 Radiomics Feature Extraction
+- Gray Level Co-occurrence Matrix (GLCM)
+- Local Binary Pattern (LBP)
+- Texture feature computation
+- Optimized NumPy implementation
+
+---
+
+### 🧠 Explainable AI (XAI)
+- Grad-CAM visualization
+- Automatic hook management
+- CUDA memory-safe implementation
+- Compatible with custom PyTorch models
+
+---
+
+# 📦 Installation
+
+Install the latest stable version from PyPI.
 
 ```bash
 pip install medxai
+```
 
-## ⚡ Quick Start
+Or install the latest development version from GitHub.
 
-### 1. Compute Segmentation Metrics (GPU Supported)
+```bash
+pip install git+https://github.com/yourusername/medxai.git
+```
+
+---
+
+# 🚀 Quick Start
+
+## Compute Dice Score
+
 ```python
 import torch
 from medxai.metrics import dice_score
 
-# Works perfectly on CUDA or CPU
 pred = torch.ones(1, 1, 256, 256)
 target = torch.ones(1, 1, 256, 256)
 
 score = dice_score(pred, target)
-print(f"Dice Coefficient: {score.item()}")
 
+print(score.item())
+```
+
+---
+
+## Extract GLCM Radiomics Features
+
+```python
 import cv2
 from medxai.radiomics import extract_glcm
 
-image = cv2.imread("ultrasound_sample.png", cv2.IMREAD_GRAYSCALE)
-features = extract_glcm(image)
-print(f"Contrast: {features['contrast']}, Homogeneity: {features['homogeneity']}")
+image = cv2.imread(
+    "ultrasound_sample.png",
+    cv2.IMREAD_GRAYSCALE
+)
 
+features = extract_glcm(image)
+
+print(features)
+```
+
+---
+
+## Generate Grad-CAM
+
+```python
 from medxai.explain import GradCAM
 
-# Initialize GradCAM safely
-cam_loader = GradCAM(model=your_segmentation_model, target_layer=your_model.encoder.layer4)
-heatmap = cam_loader.generate(input_tensor=scan_tensor, class_idx=1)
+cam = GradCAM(
+    model=model,
+    target_layer=model.encoder.layer4
+)
 
-# Clean up hooks afterward to prevent memory leak
-cam_loader.remove_hooks()
+heatmap = cam.generate(
+    input_tensor=image_tensor,
+    class_idx=1
+)
 
-## 🤝 Citation
+cam.remove_hooks()
+```
 
-If you find this toolkit useful in your medical imaging research, please consider citing it using the following BibTeX entry:
+---
+
+# 📚 Module Overview
+
+| Module | Description |
+|---------|-------------|
+| `medxai.metrics` | Segmentation evaluation metrics |
+| `medxai.losses` | Medical segmentation loss functions |
+| `medxai.preprocessing` | Image preprocessing utilities |
+| `medxai.radiomics` | Radiomics feature extraction |
+| `medxai.explain` | Explainable AI (Grad-CAM) |
+
+---
+
+# 💻 Requirements
+
+- Python ≥ 3.9
+- PyTorch
+- NumPy
+- OpenCV
+- scikit-image
+
+---
+
+# 📈 Example Applications
+
+MedXAI can be used in:
+
+- Brain Tumor Segmentation
+- Thyroid Nodule Analysis
+- Breast Ultrasound
+- Skin Lesion Classification
+- Lung CT Analysis
+- Retinal Disease Detection
+- Histopathology
+- General Medical Image Analysis
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+If you would like to contribute:
+
+1. Fork the repository.
+2. Create a new feature branch.
+3. Commit your changes.
+4. Push the branch.
+5. Open a Pull Request.
+
+Please ensure that new features include appropriate tests and documentation.
+
+---
+
+# 📄 License
+
+This project is released under the **MIT License**.
+
+See the `LICENSE` file for more information.
+
+---
+
+# 📖 Citation
+
+If you use **MedXAI** in your research, please cite:
 
 ```bibtex
 @software{rahman2026medxai,
-  author       = {Rahman, Mohammad Amanour},
-  title        = {medxai: A Production-Grade Medical Imaging AI Toolkit},
+  author       = {Mohammad Amanour Rahman},
+  title        = {MedXAI: A Lightweight Python Toolkit for Medical Imaging AI},
   year         = {2026},
   publisher    = {GitHub},
-  journal      = {GitHub repository},
-  howpublished = {\url{[https://github.com/yourusername/medxai](https://github.com/yourusername/medxai)}}
+  url          = {https://github.com/aman0311x/medxai}
 }
+```
+
+---
+
+# ⭐ Support
+
+If you find **MedXAI** useful in your research, please consider:
+
+- ⭐ Starring the repository
+- 🐛 Reporting bugs
+- 💡 Suggesting new features
+- 🤝 Contributing to the project
+
+Your support helps improve the toolkit for the medical AI research community.
