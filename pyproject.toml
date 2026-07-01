@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medxai"
+version = "0.0.1"
+description = "Simple, lightweight medical imaging AI toolkit"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+  {name = "Mohammad Amanour Rahman"}
+]
+keywords = ["medical-imaging", "deep-learning", "segmentation", "xai"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Medical Science Apps."
+]
+requires-python = ">=3.8"
+dependencies = [
+  "numpy>=1.21",
+  "opencv-python-headless>=4.5",
+  "torch>=1.10",
+  "scikit-image>=0.19",
+  "matplotlib>=3.4"
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/medxai"
