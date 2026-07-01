@@ -49,3 +49,17 @@ heatmap = cam_loader.generate(input_tensor=scan_tensor, class_idx=1)
 
 # Clean up hooks afterward to prevent memory leak
 cam_loader.remove_hooks()
+
+## 🤝 Citation
+
+If you find this toolkit useful in your medical imaging research, please consider citing it using the following BibTeX entry:
+
+```bibtex
+@software{rahman2026medxai,
+  author       = {Rahman, Mohammad Amanour},
+  title        = {medxai: A Production-Grade Medical Imaging AI Toolkit},
+  year         = {2026},
+  publisher    = {GitHub},
+  journal      = {GitHub repository},
+  howpublished = {\url{[https://github.com/yourusername/medxai](https://github.com/yourusername/medxai)}}
+}
