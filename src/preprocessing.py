@@ -1,8 +1,3 @@
-# Crea la carpeta medxai si no existe
-mkdir -p medxai
-
-# Escribe el archivo
-cat > medxai/preprocessing.py << 'EOF'
 import numpy as np
 
 def crop_roi(image, bbox):
@@ -21,4 +16,3 @@ def crop_roi(image, bbox):
         raise ValueError("Invalid ROI: ymin >= ymax or xmin >= xmax")
 
     return image[ymin:ymax, xmin:xmax]
-EOF
