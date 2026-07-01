@@ -74,13 +74,9 @@ jobs:
         run: |
           flake8 .
 
-      - name: Run Unit Tests
+      - name: Run Automated Tests & Generate Coverage Report
         run: |
-          pytest tests/ -v
-
-      - name: Generate Coverage Report
-        run: |
-          pytest tests/ \
+          python -m pytest tests/ -v \
             --cov=medxai \
             --cov-report=term \
             --cov-report=xml
