@@ -179,14 +179,6 @@ Please ensure that new features include appropriate tests and documentation.
 
 ---
 
-#  License
-
-This project is released under the **MIT License**.
-
-See the `LICENSE` file for more information.
-
----
-
 #  Citation
 
 If you use **MedXAI** in your research, please cite:
