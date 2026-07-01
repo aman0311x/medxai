@@ -27,7 +27,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/medxai"
+Homepage = "https://github.com/aman0311x/medxai"
 
 [tool.black]
 target-version = ['py313']
