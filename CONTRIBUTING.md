@@ -1,4 +1,4 @@
-# Contributing to MedXAI 🩺
+# Contributing to MedXAI 
 
 First of all, thank you for your interest in contributing to MedXAI!
 
@@ -42,7 +42,7 @@ Please:
 
 There are many ways to contribute to MedXAI.
 
-### 🐞 Report Bugs
+###  Report Bugs
 
 If you encounter a bug:
 
@@ -62,7 +62,7 @@ If you encounter a bug:
 
 ---
 
-### 💡 Suggest Features
+###  Suggest Features
 
 New ideas are always welcome.
 
@@ -84,7 +84,7 @@ Please explain:
 
 ---
 
-### 📚 Improve Documentation
+###  Improve Documentation
 
 Documentation improvements are valuable.
 
