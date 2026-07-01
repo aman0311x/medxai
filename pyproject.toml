@@ -28,3 +28,9 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/yourusername/medxai"
+
+[tool.black]
+target-version = ['py313']
+
+[tool.isort]
+profile = "black"
