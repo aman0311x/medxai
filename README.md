@@ -1,4 +1,4 @@
-# 🩺 MedXAI
+#  MedXAI
 
 [![PyPI Version](https://img.shields.io/pypi/v/medxai.svg)](https://pypi.org/project/medxai/)
 [![Python](https://img.shields.io/pypi/pyversions/medxai.svg)](https://pypi.org/project/medxai/)
@@ -10,9 +10,9 @@ Designed with simplicity, efficiency, and extensibility in mind, MedXAI seamless
 
 ---
 
-# ✨ Features
+#  Features
 
-### 📊 Segmentation Metrics
+###  Segmentation Metrics
 - Dice Coefficient
 - Intersection over Union (IoU)
 - Precision
@@ -22,7 +22,7 @@ Designed with simplicity, efficiency, and extensibility in mind, MedXAI seamless
 
 ---
 
-### 🎯 Advanced Loss Functions
+###  Advanced Loss Functions
 - Dice Loss
 - BCE + Dice Hybrid Loss
 - Focal Tversky Loss
@@ -30,7 +30,7 @@ Designed with simplicity, efficiency, and extensibility in mind, MedXAI seamless
 
 ---
 
-### 🖼 Medical Image Preprocessing
+###  Medical Image Preprocessing
 - CLAHE (Contrast Limited Adaptive Histogram Equalization)
 - ROI Cropping
 - Min-Max Normalization
@@ -38,7 +38,7 @@ Designed with simplicity, efficiency, and extensibility in mind, MedXAI seamless
 
 ---
 
-### 🔬 Radiomics Feature Extraction
+###  Radiomics Feature Extraction
 - Gray Level Co-occurrence Matrix (GLCM)
 - Local Binary Pattern (LBP)
 - Texture feature computation
@@ -46,7 +46,7 @@ Designed with simplicity, efficiency, and extensibility in mind, MedXAI seamless
 
 ---
 
-### 🧠 Explainable AI (XAI)
+###  Explainable AI (XAI)
 - Grad-CAM visualization
 - Automatic hook management
 - CUDA memory-safe implementation
@@ -54,7 +54,7 @@ Designed with simplicity, efficiency, and extensibility in mind, MedXAI seamless
 
 ---
 
-# 📦 Installation
+#  Installation
 
 Install the latest stable version from PyPI.
 
@@ -70,7 +70,7 @@ pip install git+https://github.com/yourusername/medxai.git
 
 ---
 
-# 🚀 Quick Start
+#  Quick Start
 
 ## Compute Dice Score
 
@@ -126,7 +126,7 @@ cam.remove_hooks()
 
 ---
 
-# 📚 Module Overview
+#  Module Overview
 
 | Module | Description |
 |---------|-------------|
@@ -138,7 +138,7 @@ cam.remove_hooks()
 
 ---
 
-# 💻 Requirements
+#  Requirements
 
 - Python ≥ 3.9
 - PyTorch
@@ -148,7 +148,7 @@ cam.remove_hooks()
 
 ---
 
-# 📈 Example Applications
+#  Example Applications
 
 MedXAI can be used in:
 
@@ -163,7 +163,7 @@ MedXAI can be used in:
 
 ---
 
-# 🤝 Contributing
+#  Contributing
 
 Contributions are welcome!
 
@@ -179,7 +179,7 @@ Please ensure that new features include appropriate tests and documentation.
 
 ---
 
-# 📄 License
+#  License
 
 This project is released under the **MIT License**.
 
@@ -187,7 +187,7 @@ See the `LICENSE` file for more information.
 
 ---
 
-# 📖 Citation
+#  Citation
 
 If you use **MedXAI** in your research, please cite:
 
@@ -203,13 +203,13 @@ If you use **MedXAI** in your research, please cite:
 
 ---
 
-# ⭐ Support
+#  Support
 
 If you find **MedXAI** useful in your research, please consider:
 
-- ⭐ Starring the repository
-- 🐛 Reporting bugs
-- 💡 Suggesting new features
-- 🤝 Contributing to the project
+-  Starring the repository
+-  Reporting bugs
+-  Suggesting new features
+-  Contributing to the project
 
 Your support helps improve the toolkit for the medical AI research community.
