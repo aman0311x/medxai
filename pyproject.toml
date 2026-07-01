@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "medxai"
-version = "0.0.1"
+version = "0.1.0"
 description = "Simple, lightweight medical imaging AI toolkit"
 readme = "README.md"
 license = {text = "MIT"}
