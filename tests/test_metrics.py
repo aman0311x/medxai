@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from medxai.metrics import dice_score, iou_score
+from medxai.metrics import dice_score, hausdorff_distance_95, iou_score
 
 
 def test_metrics_perfect_overlap():
@@ -24,3 +24,40 @@ def test_metrics_device_mismatch():
         target = torch.ones(1, 1, 32, 32).cpu()
         with pytest.raises(ValueError):
             dice_score(pred, target)
+
+
+def test_hd95_perfect_overlap():
+    mask = torch.zeros(20, 20)
+    mask[5:15, 5:15] = 1
+    hd = hausdorff_distance_95(mask, mask.clone())
+    assert hd.item() == pytest.approx(0.0, abs=1e-4)
+
+
+def test_hd95_known_offset():
+    pred = torch.zeros(30, 30)
+    pred[5:15, 5:15] = 1
+    target = torch.zeros(30, 30)
+    target[5:15, 8:18] = 1  # shifted 3 pixels
+    hd = hausdorff_distance_95(pred, target)
+    assert hd.item() == pytest.approx(3.0, abs=1e-4)
+
+
+def test_hd95_3d_with_spacing():
+    mask = torch.zeros(10, 10, 10)
+    mask[2:8, 2:8, 2:8] = 1
+    hd = hausdorff_distance_95(mask, mask.clone(), spacing=(2.0, 1.0, 1.0))
+    assert hd.item() == pytest.approx(0.0, abs=1e-4)
+
+
+def test_hd95_shape_mismatch():
+    pred = torch.ones(5, 5)
+    target = torch.ones(6, 6)
+    with pytest.raises(ValueError):
+        hausdorff_distance_95(pred, target)
+
+
+def test_hd95_empty_mask_raises():
+    pred = torch.zeros(5, 5)
+    target = torch.ones(5, 5)
+    with pytest.raises(ValueError):
+        hausdorff_distance_95(pred, target)

@@ -1,6 +1,8 @@
 from typing import Optional
 
+import numpy as np
 import torch
+from scipy import ndimage
 
 
 def _validate_inputs(pred: torch.Tensor, target: torch.Tensor) -> None:
@@ -89,3 +91,59 @@ def specificity(
     tn = ((1.0 - p) * (1.0 - t)).sum()
     fp = (p * (1.0 - t)).sum()
     return (tn + smooth) / (tn + fp + smooth)
+
+
+def hausdorff_distance_95(
+    pred: torch.Tensor,
+    target: torch.Tensor,
+    spacing: Optional[tuple] = None,
+) -> torch.Tensor:
+    """
+    Computes the 95th percentile Hausdorff Distance (HD95) between a
+    predicted and a ground-truth binary mask.
+
+    HD95 measures boundary/contour agreement rather than region overlap,
+    making it a useful complement to metrics like Dice or IoU for tasks
+    such as organ or tumor delineation.
+
+    Args:
+        pred:
+            Predicted binary mask of shape (H, W) or (D, H, W).
+        target:
+            Ground truth binary mask, same shape as pred.
+        spacing:
+            Optional physical voxel spacing, one value per spatial
+            dimension, used to scale distances to real-world units.
+            Defaults to isotropic unit spacing.
+
+    Returns:
+        Scalar HD95 distance tensor.
+    """
+    _validate_inputs(pred, target)
+
+    if pred.dim() not in (2, 3):
+        raise ValueError(
+            "hausdorff_distance_95 expects a single 2D or 3D mask "
+            f"(H, W) or (D, H, W), got shape {tuple(pred.shape)}"
+        )
+
+    pred_np = pred.detach().cpu().numpy().astype(bool)
+    target_np = target.detach().cpu().numpy().astype(bool)
+
+    if not pred_np.any() or not target_np.any():
+        raise ValueError("hausdorff_distance_95 is undefined when either mask is empty")
+
+    pred_surface = pred_np ^ ndimage.binary_erosion(pred_np)
+    target_surface = target_np ^ ndimage.binary_erosion(target_np)
+
+    target_dt = ndimage.distance_transform_edt(~target_surface, sampling=spacing)
+    pred_dt = ndimage.distance_transform_edt(~pred_surface, sampling=spacing)
+
+    pred_to_target = target_dt[pred_surface]
+    target_to_pred = pred_dt[target_surface]
+
+    hd95 = max(
+        float(np.percentile(pred_to_target, 95)),
+        float(np.percentile(target_to_pred, 95)),
+    )
+    return torch.tensor(hd95, dtype=torch.float32, device=pred.device)
