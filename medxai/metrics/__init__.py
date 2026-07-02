@@ -148,6 +148,7 @@ def hausdorff_distance_95(
     )
     return torch.tensor(hd95, dtype=torch.float32, device=pred.device)
 
+
 def _surface_distances(
     pred_np: np.ndarray,
     target_np: np.ndarray,
@@ -175,7 +176,9 @@ def _surface_distances(
         Tuple of (pred_to_target, target_to_pred) 1D distance arrays.
     """
     if not pred_np.any() or not target_np.any():
-        raise ValueError("Surface distance metrics are undefined when either mask is empty")
+        raise ValueError(
+            "Surface distance metrics are undefined when either mask is empty"
+        )
 
     pred_surface = pred_np ^ ndimage.binary_erosion(pred_np)
     target_surface = target_np ^ ndimage.binary_erosion(target_np)

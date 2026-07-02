@@ -1,7 +1,13 @@
 import pytest
 import torch
 
-from medxai.metrics import dice_score, hausdorff_distance_95, iou_score,  average_surface_distance, average_symmetric_surface_distance
+from medxai.metrics import (
+    dice_score,
+    hausdorff_distance_95,
+    iou_score,
+    average_surface_distance,
+    average_symmetric_surface_distance,
+)
 
 
 def test_metrics_perfect_overlap():
@@ -61,6 +67,7 @@ def test_hd95_empty_mask_raises():
     target = torch.ones(5, 5)
     with pytest.raises(ValueError):
         hausdorff_distance_95(pred, target)
+
 
 def test_asd_perfect_overlap():
     mask = torch.zeros(20, 20)
