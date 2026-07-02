@@ -140,3 +140,39 @@ class GeneralizedDiceLoss(nn.Module):
 
         gdl = (2.0 * numerator + self.smooth) / (denominator + self.smooth)
         return 1.0 - gdl
+
+
+class FocalTverskyLoss(nn.Module):
+    """
+    Focal Tversky Loss for highly imbalanced medical image segmentation.
+    Controls the trade-off between False Positives (FP) and False Negatives (FN).
+    """
+
+    def __init__(
+        self,
+        alpha: float = 0.7,
+        beta: float = 0.3,
+        gamma: float = 4.0 / 3.0,
+        smooth: float = 1e-6,
+    ):
+        super(FocalTverskyLoss, self).__init__()
+        self.alpha = alpha
+        self.beta = beta
+        self.gamma = gamma
+        self.smooth = smooth
+
+    def forward(self, inputs, targets):
+        inputs = torch.sigmoid(inputs)
+        inputs = inputs.view(-1)
+        targets = targets.view(-1)
+
+        TP = (inputs * targets).sum()
+        FP = ((1 - targets) * inputs).sum()
+        FN = (targets * (1 - inputs)).sum()
+
+        tversky = (TP + self.smooth) / (
+            TP + self.alpha * FN + self.beta * FP + self.smooth
+        )
+        focal_tversky = (1 - tversky) ** self.gamma
+
+        return focal_tversky
