@@ -2,11 +2,11 @@ import pytest
 import torch
 
 from medxai.metrics import (
+    average_surface_distance,
+    average_symmetric_surface_distance,
     dice_score,
     hausdorff_distance_95,
     iou_score,
-    average_surface_distance,
-    average_symmetric_surface_distance,
 )
 
 
