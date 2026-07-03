@@ -1,0 +1,45 @@
+name: MedXAI Repository Agent
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+jobs:
+  welcome-and-validate:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Analyze PR Content and Welcome Contributor
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body ? pr.body.toLowerCase() : "";
+            const username = pr.user.login;
+
+            // 1. Welcome Message
+            let commentMessage = `###  Welcome to MedXAI, @${username}! \n\nThank you for taking the time to contribute to our medical AI toolkit. Your efforts help the global research community! \n\n`;
+
+            // 2. Anti-Spam / Bounty Wallet Check
+            const cryptoKeywords = ["0x", "wallet", "usdc", "usdt", "solana", "ethereum", "btc", "payment"];
+            const containsCrypto = cryptoKeywords.some(keyword => body.includes(keyword));
+
+            if (containsCrypto) {
+              commentMessage += `>  **Automated Notice:** It looks like this PR description contains payment/crypto wallet addresses or bounty requests. Please note that **MedXAI** is a purely volunteer-driven, open-source research project. We **do not** offer financial or cryptocurrency rewards for contributions.\n\n`;
+            }
+
+            // 3. Next Steps Reminder
+            commentMessage += `###  Next Steps for Review:\n`;
+            commentMessage += `* Please ensure our automated Continuous Integration (CI) checks turn **green** (pass) for all Python versions.\n`;
+            commentMessage += `* Make sure you have run \`black .\` and \`isort .\` to comply with our coding standards.\n\n`;
+            commentMessage += `_I am the MedXAI automated repo agent. A human maintainer will review your code shortly!_ `;
+
+            // Post the comment to the PR
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: commentMessage
+            });

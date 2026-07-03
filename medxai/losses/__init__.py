@@ -77,3 +77,102 @@ class BCEDiceLoss(nn.Module):
         bce = F.binary_cross_entropy_with_logits(pred, target.float())
         dice = self.dice(pred, target)
         return bce + dice
+
+
+class GeneralizedDiceLoss(nn.Module):
+    """Generalized Dice Loss (GDL) for multi-class semantic segmentation.
+
+    Weights each class by the inverse squared volume of its ground-truth
+    region, which makes the loss robust to severe class imbalance between
+    foreground structures of very different sizes.
+
+    Reference:
+        Sudre et al., "Generalised Dice overlap as a deep learning loss
+        function for highly unbalanced segmentations", 2017.
+    """
+
+    def __init__(self, smooth: float = 1e-6) -> None:
+        super().__init__()
+        self.smooth = smooth
+
+    def forward(self, pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        """
+        Args:
+            pred:
+                Raw logits of shape (N, C, ...) where C is the number of
+                classes.
+            target:
+                Either class-index labels of shape (N, ...) with integer
+                values in [0, C - 1], or a one-hot tensor of shape
+                (N, C, ...).
+
+        Returns:
+            Scalar Generalized Dice loss tensor.
+        """
+        if pred.dim() < 2:
+            raise ValueError(
+                f"Expected pred of shape (N, C, ...), got {tuple(pred.shape)}"
+            )
+
+        num_classes = pred.shape[1]
+        pred = F.softmax(pred, dim=1)
+
+        if target.dim() == pred.dim() - 1:
+            target = F.one_hot(target.long(), num_classes)
+            target = target.permute(0, -1, *range(1, target.dim() - 1))
+        target = target.float().contiguous()
+
+        if pred.shape != target.shape:
+            raise ValueError(
+                f"Shape mismatch in GeneralizedDiceLoss: {pred.shape} vs {target.shape}"
+            )
+
+        # (N, C, ...) -> (C, N * ...) so each class is reduced over everything else
+        pred = pred.transpose(0, 1).flatten(1)
+        target = target.transpose(0, 1).flatten(1)
+
+        class_weights = 1.0 / (target.sum(dim=1).pow(2) + self.smooth)
+        intersection = (pred * target).sum(dim=1)
+        cardinality = pred.sum(dim=1) + target.sum(dim=1)
+
+        numerator = (class_weights * intersection).sum()
+        denominator = (class_weights * cardinality).sum()
+
+        gdl = (2.0 * numerator + self.smooth) / (denominator + self.smooth)
+        return 1.0 - gdl
+
+
+class FocalTverskyLoss(nn.Module):
+    """
+    Focal Tversky Loss for highly imbalanced medical image segmentation.
+    Controls the trade-off between False Positives (FP) and False Negatives (FN).
+    """
+
+    def __init__(
+        self,
+        alpha: float = 0.7,
+        beta: float = 0.3,
+        gamma: float = 4.0 / 3.0,
+        smooth: float = 1e-6,
+    ):
+        super(FocalTverskyLoss, self).__init__()
+        self.alpha = alpha
+        self.beta = beta
+        self.gamma = gamma
+        self.smooth = smooth
+
+    def forward(self, inputs, targets):
+        inputs = torch.sigmoid(inputs)
+        inputs = inputs.view(-1)
+        targets = targets.view(-1)
+
+        TP = (inputs * targets).sum()
+        FP = ((1 - targets) * inputs).sum()
+        FN = (targets * (1 - inputs)).sum()
+
+        tversky = (TP + self.smooth) / (
+            TP + self.alpha * FN + self.beta * FP + self.smooth
+        )
+        focal_tversky = (1 - tversky) ** self.gamma
+
+        return focal_tversky
