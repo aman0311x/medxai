@@ -281,3 +281,23 @@ def average_symmetric_surface_distance(
         / (pred_to_target.size + target_to_pred.size)
     )
     return torch.tensor(assd, dtype=torch.float32, device=pred.device)
+
+
+def compute_clinical_metrics(
+    preds: torch.Tensor, targets: torch.Tensor, threshold: float = 0.5
+):
+    """
+    Computes Sensitivity (Recall) and Specificity for medical segmentation masks.
+    """
+    preds_bin = (torch.sigmoid(preds) > threshold).float().view(-1)
+    targets_bin = targets.float().view(-1)
+
+    TP = (preds_bin * targets_bin).sum()
+    TN = ((1 - preds_bin) * (1 - targets_bin)).sum()
+    FP = (preds_bin * (1 - targets_bin)).sum()
+    FN = ((1 - preds_bin) * targets_bin).sum()
+
+    sensitivity = (TP + 1e-6) / (TP + FN + 1e-6)
+    specificity = (TN + 1e-6) / (TN + FP + 1e-6)
+
+    return {"sensitivity": sensitivity.item(), "specificity": specificity.item()}

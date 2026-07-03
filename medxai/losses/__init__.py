@@ -176,3 +176,29 @@ class FocalTverskyLoss(nn.Module):
         focal_tversky = (1 - tversky) ** self.gamma
 
         return focal_tversky
+
+
+class DiceBCELoss(nn.Module):
+    """
+    Hybrid loss combining Binary Cross Entropy (BCE) and Dice Loss.
+    Leverages pixel-level accuracy from BCE and regional overlap optimization from Dice.
+    """
+
+    def __init__(self, bce_weight: float = 0.5, smooth: float = 1e-6):
+        super().__init__()
+        self.bce_weight = bce_weight
+        self.smooth = smooth
+
+    def forward(self, inputs, targets):
+        inputs = torch.sigmoid(inputs)
+        inputs = inputs.view(-1)
+        targets = targets.view(-1)
+
+        bce = F.binary_cross_entropy(inputs, targets, reduction="mean")
+
+        intersection = (inputs * targets).sum()
+        dice_loss = 1 - (2.0 * intersection + self.smooth) / (
+            inputs.sum() + targets.sum() + self.smooth
+        )
+
+        return (self.bce_weight * bce) + ((1 - self.bce_weight) * dice_loss)
