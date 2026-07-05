@@ -71,6 +71,8 @@ def crop_roi(image: np.ndarray, bbox: Tuple[float, float, float, float]) -> np.n
         )
 
     return image[ymin:ymax, xmin:xmax]
+
+
 def apply_ct_window(
     image: np.ndarray, window_center: float, window_width: float
 ) -> np.ndarray:
