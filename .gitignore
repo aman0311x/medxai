@@ -6,4 +6,4 @@ build/
 dist/
 *.egg-info/
 .pytest_cache/
-.vscode/
+.vscode/.DS_Store
