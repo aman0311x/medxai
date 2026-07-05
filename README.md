@@ -126,6 +126,39 @@ cam.remove_hooks()
 
 ---
 
+## Run a 2D U-Net Forward Pass
+
+```python
+import torch
+from medxai.models import UNet
+
+# Initialize a U-Net for single-channel (e.g., X-ray) binary segmentation
+model = UNet(n_channels=1, n_classes=1)
+dummy_x = torch.randn(1, 1, 256, 256)
+logits = model(dummy_x)
+
+print(logits.shape)
+```
+
+---
+
+## Clean a Noisy Prediction Mask
+
+```python
+import numpy as np
+from medxai.postprocessing import clean_noisy_mask
+
+# A binary mask with small false-positive noise
+noisy_mask = np.zeros((100, 100), dtype=bool)
+noisy_mask[40:60, 40:60] = True   # main region
+noisy_mask[5:7, 5:7] = True       # small noise artifact
+
+cleaned_mask = clean_noisy_mask(noisy_mask, min_size=64)
+
+print(cleaned_mask.sum())  # noise removed, only main region remains
+```
+---
+
 #  Module Overview
 
 | Module | Description |
