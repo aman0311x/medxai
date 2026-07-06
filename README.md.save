@@ -121,7 +121,6 @@ heatmap = cam.generate(
     class_idx=1
 )
 
-
 cam.remove_hooks()
 ```
 
@@ -133,6 +132,7 @@ cam.remove_hooks()
 import torch
 from medxai.models import UNet
 
+# Initialize a U-Net for single-channel (e.g., X-ray) binary segmentation
 model = UNet(n_channels=1, n_classes=1)
 dummy_x = torch.randn(1, 1, 256, 256)
 logits = model(dummy_x)
@@ -155,7 +155,7 @@ noisy_mask[5:7, 5:7] = True       # small noise artifact
 
 cleaned_mask = clean_noisy_mask(noisy_mask, min_size=64)
 
-print(cleaned_mask.sum())  
+print(cleaned_mask.sum())  # noise removed, only main region remains
 ```
 ---
 
@@ -219,8 +219,7 @@ If you use **MedXAI** in your research, please cite:
 ```bibtex
 @software{rahman2026medxai,
   author       = {Mohammad Amanour Rahman},
-  title        = {MedXAI: A Lightweight Python Toolkit for Medical Imaging AI},
-  year         = {2026},
+q  title        = {MedXAI: A Lightweight Python Toolkit for Medical Imaging AIz year         = {2026},
   publisher    = {GitHub},
   url          = {https://github.com/aman0311x/medxai}
 }
