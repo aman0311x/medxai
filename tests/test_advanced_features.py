@@ -1,8 +1,10 @@
 import numpy as np
+import pytest
 import torch
 
+from medxai.inference import sliding_window_inference_2d, sliding_window_inference_3d
 from medxai.losses import FocalTverskyLoss
-from medxai.models import UNet
+from medxai.models import AttentionUNet, AttentionUNet3D, UNet, UNet3D
 from medxai.postprocessing import clean_noisy_mask
 
 
@@ -37,3 +39,33 @@ def test_focal_tversky_loss():
     loss = loss_fn(preds, targets)
     assert isinstance(loss.item(), float)
     assert loss >= 0
+
+
+def test_sliding_window_inference_2d_raises_on_small_image():
+    model = UNet(n_channels=1, n_classes=2)
+    small_image = torch.randn(1, 1, 32, 32)  # patch_size (64,64) থেকে ছোট
+
+    with pytest.raises(ValueError, match="smaller than patch_size"):
+        sliding_window_inference_2d(model, small_image, patch_size=(64, 64))
+
+
+def test_sliding_window_inference_3d_raises_on_small_volume():
+    model = UNet3D(n_channels=1, n_classes=2)
+    small_volume = torch.randn(1, 1, 32, 32, 32)  # patch_size (64,64,64) থেকে ছোট
+
+    with pytest.raises(ValueError, match="smaller than patch_size"):
+        sliding_window_inference_3d(model, small_volume, patch_size=(64, 64, 64))
+
+
+def test_attention_unet_forward():
+    model = AttentionUNet(n_channels=1, n_classes=2)
+    dummy_input = torch.randn(1, 1, 64, 64)
+    output = model(dummy_input)
+    assert output.shape == (1, 2, 64, 64)
+
+
+def test_attention_unet3d_forward():
+    model = AttentionUNet3D(n_channels=1, n_classes=2)
+    dummy_input = torch.randn(1, 1, 32, 32, 32)
+    output = model(dummy_input)
+    assert output.shape == (1, 2, 32, 32, 32)

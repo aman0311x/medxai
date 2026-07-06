@@ -76,10 +76,6 @@ def crop_roi(image: np.ndarray, bbox: Tuple[float, float, float, float]) -> np.n
 def apply_ct_window(
     image: np.ndarray, window_center: float, window_width: float
 ) -> np.ndarray:
-    """
-    Applies a CT window (Hounsfield Units clipping and normalization) to a medical image.
-    Common windows: Soft Tissue (W:400, C:40), Bone (W:1800, C:400), Lung (W:1500, C:-600).
-    """
     if not isinstance(image, np.ndarray):
         raise TypeError("Input image must be a NumPy array.")
 
