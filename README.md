@@ -1,9 +1,7 @@
 # MedXAI
 
 <p align="center">
-
-<img src="docs/images/logo.png" width="180">
-
+  <img src="logo.svg" width="180" alt="MedXAI Logo">
 </p>
 
 <p align="center">
