@@ -20,8 +20,8 @@
   <img src="https://img.shields.io/pypi/pyversions/medxai.svg" alt="Python Versions">
 </a>
 
-<a href="https://github.com/aman0311x/medxai/blob/main/LICENSE">
-  <img src="https://img.shields.io/github/license/aman0311x/medxai" alt="License">
+<a href="D:\medxai-project\LICENSE">
+  <img src="https://img.shields.io/github/license/aman0311x/medxai">
 </a>
 
 <a href="https://github.com/aman0311x/medxai/actions">
