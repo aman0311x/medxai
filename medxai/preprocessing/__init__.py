@@ -50,13 +50,32 @@ def roi_crop(image: np.ndarray, mask: np.ndarray) -> np.ndarray:
     return image[y_min : y_max + 1, x_min : x_max + 1]
 
 
+def crop_roi(image: np.ndarray, bbox: Tuple[float, float, float, float]) -> np.ndarray:
+    if len(bbox) != 4:
+        raise ValueError(f"bbox must contain exactly 4 values, got {len(bbox)}")
+
+    ymin, xmin, ymax, xmax = (int(round(coord)) for coord in bbox)
+
+    if ymin > ymax:
+        ymin, ymax = ymax, ymin
+    if xmin > xmax:
+        xmin, xmax = xmax, xmin
+
+    height, width = image.shape[:2]
+    ymin, ymax = max(0, ymin), min(height, ymax)
+    xmin, xmax = max(0, xmin), min(width, xmax)
+
+    if ymin == ymax or xmin == xmax:
+        raise ValueError(
+            f"Crop region is empty after clipping: y=({ymin}, {ymax}), x=({xmin}, {xmax})"
+        )
+
+    return image[ymin:ymax, xmin:xmax]
+
+
 def apply_ct_window(
     image: np.ndarray, window_center: float, window_width: float
 ) -> np.ndarray:
-    """
-    Applies a CT window (Hounsfield Units clipping and normalization) to a medical image.
-    Common windows: Soft Tissue (W:400, C:40), Bone (W:1800, C:400), Lung (W:1500, C:-600).
-    """
     if not isinstance(image, np.ndarray):
         raise TypeError("Input image must be a NumPy array.")
 
