@@ -20,8 +20,10 @@
   <img src="https://img.shields.io/pypi/pyversions/medxai.svg" alt="Python Versions">
 </a>
 
-[![License: MIT](https://img.shields.io/github/license/aman0311x/medxai)](LICENSE)
-
+<a href="LICENSE">
+    <img src="https://img.shields.io/github/license/aman0311x/medxai" alt="License">
+  </a>
+  
 <a href="https://github.com/aman0311x/medxai/actions">
   <img src="https://img.shields.io/github/actions/workflow/status/aman0311x/medxai/python-package.yml?branch=main" alt="Build Status">
 </a>
