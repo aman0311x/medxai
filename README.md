@@ -13,36 +13,51 @@
 <p align="center">
 
 <a href="https://pypi.org/project/medxai/">
-<img src="https://img.shields.io/pypi/v/medxai.svg">
+  <img src="https://img.shields.io/pypi/v/medxai.svg" alt="PyPI Version">
 </a>
 
 <a href="https://pypi.org/project/medxai/">
-<img src="https://img.shields.io/pypi/pyversions/medxai.svg">
+  <img src="https://img.shields.io/pypi/pyversions/medxai.svg" alt="Python Versions">
 </a>
 
-<a href="LICENSE">
-<img src="https://img.shields.io/github/license/aman0311x/medxai">
+<a href="https://github.com/aman0311x/medxai/blob/main/LICENSE">
+  <img src="https://img.shields.io/github/license/aman0311x/medxai" alt="License">
 </a>
 
 <a href="https://github.com/aman0311x/medxai/actions">
-<img src="https://img.shields.io/github/actions/workflow/status/aman0311x/medxai/python-package.yml">
+  <img src="https://img.shields.io/github/actions/workflow/status/aman0311x/medxai/python-package.yml?branch=main" alt="Build Status">
+</a>
+
+<a href="https://github.com/astral-sh/ruff">
+  <img src="https://img.shields.io/badge/code%20style-ruff-black" alt="Code Style">
+</a>
+
+<a href="#">
+  <img src="https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS-blue" alt="Platform">
 </a>
 
 <a href="https://github.com/aman0311x/medxai/stargazers">
-<img src="https://img.shields.io/github/stars/aman0311x/medxai">
+  <img src="https://img.shields.io/github/stars/aman0311x/medxai" alt="GitHub Stars">
 </a>
 
 <a href="https://github.com/aman0311x/medxai/network/members">
-<img src="https://img.shields.io/github/forks/aman0311x/medxai">
+  <img src="https://img.shields.io/github/forks/aman0311x/medxai" alt="GitHub Forks">
 </a>
 
 <a href="https://github.com/aman0311x/medxai/issues">
-<img src="https://img.shields.io/github/issues/aman0311x/medxai">
+  <img src="https://img.shields.io/github/issues/aman0311x/medxai" alt="GitHub Issues">
 </a>
 
 <a href="https://pepy.tech/project/medxai">
-<img src="https://static.pepy.tech/badge/medxai">
+  <img src="https://static.pepy.tech/badge/medxai" alt="Downloads">
 </a>
+
+<!-- Enable after Codecov is configured -->
+<!--
+<a href="https://codecov.io/gh/aman0311x/medxai">
+  <img src="https://img.shields.io/codecov/c/github/aman0311x/medxai" alt="Coverage">
+</a>
+-->
 
 </p>
 
