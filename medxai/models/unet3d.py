@@ -20,23 +20,29 @@ class DoubleConv3D(nn.Module):
         return self.double_conv(x)
 
 
+class UNetEncoder3D(nn.Module):
+    def __init__(self, n_channels: int = 1):
+        super().__init__()
+        self.inc = DoubleConv3D(n_channels, 64)
+        self.down1 = nn.Sequential(nn.MaxPool3d(2), DoubleConv3D(64, 128))
+        self.down2 = nn.Sequential(nn.MaxPool3d(2), DoubleConv3D(128, 256))
+        self.down3 = nn.Sequential(nn.MaxPool3d(2), DoubleConv3D(256, 512))
+
+    def forward(self, x):
+        x1 = self.inc(x)
+        x2 = self.down1(x1)
+        x3 = self.down2(x2)
+        x4 = self.down3(x3)
+        return [x1, x2, x3, x4]
+
+
 class UNet3D(nn.Module):
-    """
-    Standard PyTorch implementation of 3D U-Net for volumetric medical
-    image segmentation (e.g. CT/MRI scans).
-
-    Input/output tensors are expected in (B, C, D, H, W) format.
-    """
-
     def __init__(self, n_channels: int = 1, n_classes: int = 1):
         super(UNet3D, self).__init__()
         self.n_channels = n_channels
         self.n_classes = n_classes
 
-        self.inc = DoubleConv3D(n_channels, 64)
-        self.down1 = nn.Sequential(nn.MaxPool3d(2), DoubleConv3D(64, 128))
-        self.down2 = nn.Sequential(nn.MaxPool3d(2), DoubleConv3D(128, 256))
-        self.down3 = nn.Sequential(nn.MaxPool3d(2), DoubleConv3D(256, 512))
+        self.encoder = UNetEncoder3D(n_channels)
 
         self.up1 = nn.ConvTranspose3d(512, 256, kernel_size=2, stride=2)
         self.conv_up1 = DoubleConv3D(512, 256)
@@ -48,10 +54,7 @@ class UNet3D(nn.Module):
         self.outc = nn.Conv3d(64, n_classes, kernel_size=1)
 
     def forward(self, x):
-        x1 = self.inc(x)
-        x2 = self.down1(x1)
-        x3 = self.down2(x2)
-        x4 = self.down3(x3)
+        x1, x2, x3, x4 = self.encoder(x)
 
         x = self.up1(x4)
         x = torch.cat([x, x3], dim=1)
